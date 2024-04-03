@@ -14,7 +14,7 @@ jobs:
 
     steps:
     - name: Checkout repository code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Use Node.js 20.x
       uses: actions/setup-node@v4
@@ -43,19 +43,21 @@ jobs:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy to production
-        uses: johnbeynon/render-deploy-action@v0.0.8
+      - uses: actions/checkout@v3
+      - uses: JorgeLNJunior/render-deploy@v1.4.4
         with:
-          service-id: ${{ secrets.SERVICE_BE_ID }}
-          api-key: ${{ secrets.RENDER_TOKEN }}
-
+          service_id: ${{ secrets.SERVICE_BE_ID }}
+          api_key: ${{ secrets.RENDER_TOKEN }}
+          wait_deploy: true
+            
   deploy-fe:
     needs: build_and_test
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy to production
-        uses: johnbeynon/render-deploy-action@v0.0.8
-        with:
-          service-id: ${{ secrets.SERVICE_FE_ID }}
-          api-key: ${{ secrets.RENDER_TOKEN }}
+        - uses: actions/checkout@v3
+        - uses: JorgeLNJunior/render-deploy@v1.4.4
+          with:
+            service_id: ${{ secrets.SERVICE_FE_ID }}
+            api_key: ${{ secrets.RENDER_TOKEN }}
+            wait_deploy: true
