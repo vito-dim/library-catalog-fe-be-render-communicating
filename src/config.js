@@ -1,1 +1,1 @@
-export const settings = { host: "https://library-catalog-vidra.onrender.com" };
+export const settings = { host: "https://library-catalog-fe-be-render.onrender.com" };
