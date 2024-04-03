@@ -40,24 +40,24 @@ jobs:
 
   deploy-be:
     needs: build_and_test
-    # if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: JorgeLNJunior/render-deploy@v1.4.4
+      - name: Deploy BE in production
+        uses: JorgeLNJunior/render-deploy@v1.4.4
         with:
-          service_id: ${{ secrets.RENDER_BE_TOKEN}}
+          service_id: ${{ secrets.RENDER_BE_TOKEN }}
           api_key: ${{ secrets.RENDER_TOKEN }}
           wait_deploy: true
             
   deploy-fe:
-    needs: build_and_test
-    # if: github.ref == 'refs/heads/main'
+    needs: deploy-be
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
-        - uses: actions/checkout@v4
-        - uses: JorgeLNJunior/render-deploy@v1.4.4
-          with:
-            service_id: ${{ secrets.RENDER_FE_TOKEN}}
-            api_key: ${{ secrets.RENDER_TOKEN }}
-            wait_deploy: true
+      - name: Deploy FE in production
+        uses: JorgeLNJunior/render-deploy@v1.4.4
+        with:
+          service_id: ${{ secrets.RENDER_FE_TOKEN }}
+          api_key: ${{ secrets.RENDER_TOKEN }}
+          wait_deploy: true
